@@ -4,39 +4,23 @@ This folder contains reusable configuration files and scripts to quickly set up 
 
 ## Quick Setup
 
-1. **Copy template files to your new project:**
-   ```bash
-   cp startup/* /path/to/new-project/
-   ```
+**Automated Setup (Recommended):**
+```bash
+./setup.sh --name my-project --description "My awesome project"
+./setup.sh --name my-project --description "My awesome project" --public  # For public repo
+```
 
-2. **Customize project-specific values:**
-   - Update `pyproject.toml`: name, description, dependencies
-   - Update `.env.example`: application-specific variables
-   - Update README template with your project details
+**Manual Setup (Alternative):**
+See `QUICK_START.md` for detailed manual setup instructions.
 
-3. **Initialize environment:**
-   ```bash
-   # Install Python 3.12 if needed
-   uv python install 3.12
-   
-   # Create virtual environment
-   uv venv .venv --python 3.12
-   
-   # Install dependencies
-   uv sync --dev
-   
-   # Setup development tools
-   make setup
-   ```
-
-4. **Initialize git repository:**
-   ```bash
-   git init
-   gh repo create PROJECT-NAME --private --source=.
-   git add -A
-   git commit -m "Initial project setup"
-   git push -u origin main
-   ```
+The automated script will:
+- Create project directory with all template files
+- Set up Python 3.12 virtual environment with UV
+- Install all dependencies
+- Initialize git repository
+- Create GitHub repository
+- Set up pre-commit hooks
+- Run quality checks
 
 ## What's Included
 
@@ -70,18 +54,50 @@ This folder contains reusable configuration files and scripts to quickly set up 
 - Automated code formatting
 - Git hooks for quality gates
 
-## Common Makefile Commands
+## Complete Makefile Commands
 
+### Essential Commands
 ```bash
 make help          # Show all available commands
-make dev           # Install all dependencies
-make setup         # Complete development environment setup
 make qa            # Run all quality checks (lint, type-check, test)
-make dev-cycle     # Format, lint, type-check, test
+make dev-cycle     # Complete development cycle (format, lint, type-check, test)
 make fix           # Auto-fix formatting and linting issues
-make test          # Run tests
+make ci            # Run CI-like checks locally
+```
+
+### Environment Setup
+```bash
+make install       # Install production dependencies only
+make dev           # Install all dependencies including dev tools
+make setup         # Complete development environment setup (includes pre-commit)
+```
+
+### Code Quality
+```bash
+make lint          # Run ruff linter
+make format        # Format code with ruff
+make format-check  # Check code formatting without making changes
+make type-check    # Run mypy type checking
+```
+
+### Testing
+```bash
+make test          # Run tests with pytest
+make test-verbose  # Run tests with verbose output
 make coverage      # Run tests with coverage report
-make clean         # Clean up cache files
+```
+
+### Git & Quality Gates
+```bash
+make pre-commit    # Run pre-commit hooks on all files
+```
+
+### Project Management
+```bash
+make check         # Check project configuration
+make lock          # Update UV lock file
+make info          # Show environment information
+make clean         # Clean up cache files and build artifacts
 ```
 
 ## Customization
