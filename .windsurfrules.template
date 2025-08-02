@@ -1,0 +1,150 @@
+# Windsurf Rules for PROJECT-NAME
+
+## Project Overview
+**PROJECT-NAME**: PROJECT DESCRIPTION
+
+## Design First Approach
+- **NEVER proceed to implementation without discussing design first**
+- For every feature request:
+  1. Ask clarifying questions to understand requirements
+  2. Explore and present 1-2 design alternatives
+  3. Discuss trade-offs of each approach
+  4. Establish clear design direction before coding
+  5. Create step-by-step implementation plan
+  6. Get explicit approval before proceeding
+
+## Tech Stack Standards
+- **Python 3.12** with type hints required
+- **UV** for fast, reliable package management
+- **Pydantic v2** for data models:
+  - Use model_validate instead of parse_obj
+  - Use model_dump instead of dict()
+  - Use ConfigDict for configuration
+  - Create decoupled data models in separate modules
+- **Ruff** for linting and formatting (replaces black, flake8, isort)
+- **mypy** for static type checking
+- **pytest** for testing with coverage reporting
+
+## Code Organization Best Practices
+
+### Utility Functions
+- **BEFORE creating any utility functions**:
+  - Thoroughly examine `./src/utils` (imported as `helper`) first
+  - Search for existing similar functionality
+  - Check helper.__init__.py for exported functions
+  - Ask if specific utility exists before creating new ones
+
+- **Utils Package Convention**:
+  - ALWAYS import using: `import src.utils as helper`
+  - ALWAYS access using helper namespace: `helper.function_name`
+  - NEVER import directly from specific utils modules
+  - Keep __init__.py updated to expose functions
+
+### File Structure
+```
+PROJECT-NAME/
+├── src/              # Main source code
+│   ├── utils/        # Utility functions (import as helper)
+│   ├── models/       # Data models (Pydantic)
+│   └── core/         # Core business logic
+├── tests/            # Test files matching src structure
+├── .env.example      # Environment variable template
+├── pyproject.toml    # Project configuration
+├── Makefile          # Development commands
+└── README.md         # Project documentation
+```
+
+## Development Workflow
+1. **Think and plan first** - understand problem before coding
+2. **Use TodoWrite** for complex, multi-step tasks
+3. **Run quality checks** - `make qa` before finishing any work
+4. **Keep changes simple** - avoid massive refactors
+5. **Test everything** - maintain coverage above 80%
+6. **Document decisions** - update README and comments
+
+## Quality Standards
+- **Type hints**: Required for all functions and methods
+- **Line length**: 88 characters (black-compatible)
+- **Test coverage**: Minimum 80%, aim for higher
+- **Documentation**: Docstrings for public functions and classes
+- **Error handling**: Proper exception handling and validation
+- **Code style**: Enforced by ruff, mypy, and pre-commit hooks
+
+## Key Development Commands
+```bash
+make help          # Show all available commands
+make dev-cycle     # Format, lint, type-check, test (use frequently)
+make qa            # Run all quality checks (before committing)
+make fix           # Auto-fix formatting and linting issues
+make test          # Run tests with coverage
+make setup         # Setup development environment
+make clean         # Clean cache files and artifacts
+```
+
+## Performance Considerations
+- **Async patterns**: Use for I/O-bound operations
+- **Caching strategies**: Implement appropriate caching
+- **Memory usage**: Consider for large data operations
+- **Database queries**: Optimize for performance
+- **API calls**: Use connection pooling and rate limiting
+
+## Dependencies Management
+- **Adding dependencies**:
+  - Production: `uv add package-name`
+  - Development: `uv add --dev package-name`
+- **Syncing environment**: `uv sync --dev`
+- **Updating lock file**: `uv lock`
+- **Keep dependencies minimal** and well-justified
+
+## Testing Guidelines
+- **Write tests for all new functionality**
+- **Use descriptive test names** that explain behavior
+- **Test both success and failure cases**
+- **Mock external dependencies** appropriately
+- **Run tests frequently**: `make test`
+- **Maintain test coverage**: aim for >80%
+
+## Git and Version Control
+- **Conventional commit messages**
+- **Pre-commit hooks** run automatically (ruff, mypy, tests)
+- **Keep commits atomic** and focused
+- **Always run `make qa`** before committing
+- **Use meaningful branch names**
+
+## Environment Configuration
+- **Use `.env.example`** as template for environment variables
+- **Never commit secrets** or sensitive data
+- **Document all environment variables** in .env.example
+- **Use proper types** for environment variable parsing
+
+## Error Handling Best Practices
+- **Use appropriate exception types**
+- **Provide meaningful error messages**
+- **Log errors appropriately** (consider structured logging)
+- **Handle edge cases** gracefully
+- **Validate inputs** early and clearly
+
+## Code Review Guidelines
+- **Check for existing utility functions** before approving new ones
+- **Ensure type hints** are present and accurate
+- **Verify test coverage** for new functionality
+- **Look for potential performance issues**
+- **Ensure documentation** is updated
+
+## Common Patterns to Follow
+- **Data models**: Use Pydantic v2 with proper validation
+- **Configuration**: Use structured config classes
+- **Logging**: Use structured logging with appropriate levels
+- **Error handling**: Custom exception classes for different error types
+- **API responses**: Consistent response formats
+- **Database operations**: Use proper transaction handling
+
+## Performance Optimization
+- **Profile before optimizing** - measure, don't guess
+- **Use appropriate data structures** for the use case
+- **Consider memory vs speed tradeoffs**
+- **Implement caching** where beneficial
+- **Use async/await** for I/O operations
+- **Batch operations** when possible
+
+Remember: Simplicity, quality, and maintainability over complexity and premature optimization.

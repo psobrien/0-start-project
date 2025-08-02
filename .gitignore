@@ -1,0 +1,86 @@
+# Virtual Environment
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Python artifacts
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+.mypy_cache/
+.ruff_cache/
+
+# IDE settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*.mp4
+instructions/
+
+# Logs
+*.log
+logs/
+./video/video_files/
+# Local development
+**/.DS_Store
+.coverage
+htmlcov/
+coverage.xml
+
+# Dependencies
+node_modules/
+dist/
+build/
+
+# Local database
+*.db
+*.sqlite3
+
+# Environment variables
+.env.local
+.env.development
+.env.test
+.env.production
+.windsurfrules
+
+
+# Data - exclude data directories and common data files
+../data/
+../data/**/
+data/
+test/output/
+
+# Common data file types
+*.pdf
+*.xlsx
+*.xls
+*.docx
+*.doc
+*.csv
+!requirements.txt
+
+ref/
+
+# Ignore all models directories except pipeline models
+/models/
+# /**/models/*
+!/src/pipelines/models/*
+qdrant_storage/
+search_data/
+# production_data/
+# docstore/
+mpnet_schema_contrastive/
+mpnet-schema-cls/

@@ -1,0 +1,11 @@
+"""Basic tests for PROJECT-NAME."""
+
+
+def test_basic_import() -> None:
+    """Test that we can import the main module."""
+    import src  # noqa: F401
+
+
+def test_basic_assertion() -> None:
+    """Basic test to verify pytest is working."""
+    assert True  # noqa: S101

@@ -1,0 +1,121 @@
+# CLAUDE.md - PROJECT-NAME
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+**PROJECT-NAME**: PROJECT DESCRIPTION
+
+## Core Development Workflow
+1. **Think first**: Read the codebase for relevant files and understand the problem
+2. **Plan with TodoWrite**: Break down complex tasks into manageable todo items
+3. **Check before starting**: Verify the plan and get approval before implementation
+4. **Simplicity first**: Make every change as simple as possible, impacting minimal code
+5. **Progress updates**: Give high-level explanations of changes at each step
+6. **Quality gates**: Always run `make qa` before considering work complete
+7. **Review and document**: Summarize changes and add relevant information
+
+## Design First Approach
+- **NEVER proceed to implementation without discussing design first**
+- For every feature request, you MUST:
+  1. Ask clarifying questions to understand requirements
+  2. Explore and present at least 1-2 design alternatives
+  3. Discuss trade-offs of each approach with the user
+  4. Establish clear design direction before writing code
+  5. Create step-by-step implementation plan
+  6. Get explicit approval before proceeding
+
+## Tech Stack Standards
+- **Python 3.12** with type hints required
+- **UV** for package management (fast, reliable)
+- **Pydantic v2** for data models (use model_validate, model_dump, ConfigDict)
+- **Ruff** for linting and formatting (replaces black, flake8, isort)
+- **mypy** for static type checking
+- **pytest** for testing with coverage reporting
+
+## Code Organization
+```
+PROJECT-NAME/
+├── src/              # Main source code
+│   └── utils/        # Utility functions (import as helper)
+├── tests/            # Test files
+├── .env.example      # Environment template
+├── pyproject.toml    # Project config
+├── Makefile          # Development commands
+└── README.md         # Documentation
+```
+
+## Utility Function Guidelines
+- **BEFORE creating any utility functions**:
+  - Thoroughly examine `./src/utils` (imported as `helper`) first
+  - Explore all modules within src/utils for existing functions
+  - Use grep/search to find similar functionality
+  - Check helper.__init__.py for exported functions
+  - Ask user if specific utility exists before creating new ones
+  - Only create new utilities if nothing suitable exists
+
+- **Utils Package Convention**:
+  - ALWAYS import using: `import src.utils as helper`
+  - ALWAYS access using helper namespace: `helper.function_name`
+  - NEVER import directly from specific utils modules
+  - Help update __init__.py files to expose required functions
+
+## Development Commands
+- `make help` - Show all available commands
+- `make dev-cycle` - Complete development cycle (format, lint, type-check, test)
+- `make qa` - Run all quality assurance checks
+- `make fix` - Auto-fix code formatting and linting issues
+- `make test` - Run tests with coverage
+- `make setup` - Setup development environment with pre-commit hooks
+
+## Code Quality Standards
+- **Type hints**: Required for all functions and methods
+- **Line length**: 88 characters (black-compatible)
+- **Test coverage**: Must remain above 80%
+- **Documentation**: Docstrings for public functions and classes
+- **Error handling**: Proper exception handling and validation
+- **Performance**: Consider async patterns for I/O operations
+
+## Implementation Guidelines
+- **Preserve existing code structure** unless explicitly asked to refactor
+- **Create comprehensive design plans** before suggesting code
+- **Identify integration points** between components
+- **Implement proper error handling** and validation
+- **Use existing patterns** and conventions from the codebase
+- **Keep changes atomic** and focused
+
+## Testing Requirements
+- Write tests for all new functionality
+- Use descriptive test names that explain behavior
+- Test both success and failure cases
+- Maintain good test coverage
+- Run `make test` before committing
+
+## Git and Development Workflow
+- Use conventional commit messages
+- Pre-commit hooks run automatically (ruff, mypy, tests)
+- Keep commits atomic and focused
+- Always run quality checks before committing
+- Use TodoWrite for tracking complex tasks
+
+## Environment and Dependencies
+- Uses `.venv/` virtual environment
+- Environment variables in `.env.example`
+- Add deps: `uv add package-name` (prod) or `uv add --dev package-name` (dev)
+- Sync environment: `uv sync --dev`
+- Update lock file: `uv lock`
+
+## Performance Considerations
+- Suggest asynchronous patterns for I/O-bound operations
+- Identify potential performance bottlenecks
+- Recommend appropriate caching strategies
+- Consider memory usage for large data operations
+
+## Key Principles
+1. **Simplicity over complexity** - prefer clear, simple solutions
+2. **Quality over speed** - always run quality checks
+3. **Plan before code** - use TodoWrite for complex tasks
+4. **Reuse before create** - check existing utilities first
+5. **Test everything** - maintain high coverage
+6. **Document decisions** - explain complex choices
+
+Remember: Every change should be simple, well-tested, and improve the codebase quality.
