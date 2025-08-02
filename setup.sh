@@ -91,8 +91,11 @@ if [[ ! "$PROJECT_NAME" =~ ^[a-z0-9_-]+$ ]]; then
     exit 1
 fi
 
-# Create project directory
-PROJECT_DIR="../$PROJECT_NAME"
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Create project directory in current working directory
+PROJECT_DIR="$PROJECT_NAME"
 if [[ -d "$PROJECT_DIR" ]]; then
     print_error "Directory $PROJECT_DIR already exists."
     exit 1
@@ -104,10 +107,9 @@ cd "$PROJECT_DIR"
 
 # Copy template files
 print_status "Copying template files..."
-STARTUP_DIR="../coverage-ai/startup"
-cp "$STARTUP_DIR/.gitignore" .
-cp "$STARTUP_DIR/.pre-commit-config.yaml" .
-cp "$STARTUP_DIR/Makefile" .
+cp "$SCRIPT_DIR/.gitignore" .
+cp "$SCRIPT_DIR/.pre-commit-config.yaml" .
+cp "$SCRIPT_DIR/Makefile" .
 
 # Process templates with substitutions
 print_status "Processing templates..."
@@ -116,11 +118,11 @@ print_status "Processing templates..."
 sed -e "s/PROJECT-NAME/$PROJECT_NAME/g" \
     -e "s/PROJECT DESCRIPTION/$PROJECT_DESCRIPTION/g" \
     -e "s/PROJECT_PACKAGE/${PROJECT_NAME//-/_}/g" \
-    "$STARTUP_DIR/pyproject.toml.template" > pyproject.toml
+    "$SCRIPT_DIR/pyproject.toml.template" > pyproject.toml
 
 # .env.example
 sed "s/PROJECT-NAME/$PROJECT_NAME/g" \
-    "$STARTUP_DIR/.env.example.template" > .env.example
+    "$SCRIPT_DIR/.env.example.template" > .env.example
 
 # Create directory structure
 print_status "Creating directory structure..."
@@ -128,13 +130,13 @@ mkdir -p src tests
 
 # Process source files
 sed "s/PROJECT-NAME - PROJECT DESCRIPTION/$PROJECT_NAME - $PROJECT_DESCRIPTION/g" \
-    "$STARTUP_DIR/src/__init__.py.template" > src/__init__.py
+    "$SCRIPT_DIR/src/__init__.py.template" > src/__init__.py
 
 sed "s/PROJECT-NAME/$PROJECT_NAME/g" \
-    "$STARTUP_DIR/tests/__init__.py.template" > tests/__init__.py
+    "$SCRIPT_DIR/tests/__init__.py.template" > tests/__init__.py
 
 sed "s/PROJECT-NAME/$PROJECT_NAME/g" \
-    "$STARTUP_DIR/tests/test_basic.py.template" > tests/test_basic.py
+    "$SCRIPT_DIR/tests/test_basic.py.template" > tests/test_basic.py
 
 # Process development configuration files
 print_status "Processing development configuration templates..."
@@ -142,12 +144,12 @@ print_status "Processing development configuration templates..."
 # CLAUDE.md
 sed -e "s/PROJECT-NAME/$PROJECT_NAME/g" \
     -e "s/PROJECT DESCRIPTION/$PROJECT_DESCRIPTION/g" \
-    "$STARTUP_DIR/CLAUDE.md.template" > CLAUDE.md
+    "$SCRIPT_DIR/CLAUDE.md.template" > CLAUDE.md
 
 # .windsurfrules
 sed -e "s/PROJECT-NAME/$PROJECT_NAME/g" \
     -e "s/PROJECT DESCRIPTION/$PROJECT_DESCRIPTION/g" \
-    "$STARTUP_DIR/.windsurfrules.template" > .windsurfrules
+    "$SCRIPT_DIR/.windsurfrules.template" > .windsurfrules
 
 # Check for UV installation
 if ! command -v uv &> /dev/null; then
@@ -166,12 +168,14 @@ uv venv .venv --python 3.12
 print_status "Installing dependencies..."
 uv sync --dev
 
+# Initialize git repository (required before pre-commit)
+print_status "Initializing git repository..."
+git init
+
 print_status "Setting up pre-commit hooks..."
 uv run pre-commit install
 
-# Initialize git repository
-print_status "Initializing git repository..."
-git init
+# Stage all files for commit
 git add -A
 
 # Create initial commit

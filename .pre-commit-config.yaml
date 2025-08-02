@@ -28,19 +28,19 @@ repos:
 
   - repo: local
     hooks:
-      - id: uv-check
-        name: uv-check
-        description: run uv check to validate pyproject.toml
+      - id: uv-sync-check
+        name: uv-sync-check
+        description: check if dependencies are synced
         entry: uv
-        args: [check]
+        args: [sync, --dry-run]
         language: system
         pass_filenames: false
-        files: ^pyproject\.toml$
+        files: ^(pyproject\.toml|uv\.lock)$
       
       - id: pytest-check
         name: pytest-check
-        entry: python
-        args: [-m, pytest]
+        entry: uv
+        args: [run, python, -m, pytest]
         language: system
         pass_filenames: false
         always_run: true

@@ -1,9 +1,12 @@
 """Basic tests for PROJECT-NAME."""
 
+import src  # noqa: F401
+
 
 def test_basic_import() -> None:
     """Test that we can import the main module."""
-    import src  # noqa: F401
+    # Import is at module level above
+    assert src is not None  # noqa: S101
 
 
 def test_basic_assertion() -> None:
